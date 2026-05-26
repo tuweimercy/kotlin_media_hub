@@ -54,6 +54,9 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.6.0")
     //view model:(data management and compose rendering)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    //get icons from material design
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    //test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
