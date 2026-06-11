@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -56,6 +57,17 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     //get icons from material design
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    //firebase dependencies
+    //firebase BOM - management dependency for firebase products
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    //firebase auth
+    implementation("com.google.firebase:firebase-auth-ktx")
+    //firebase database
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    //storage
+    implementation("com.google.firebase:firebase-storage-ktx")
+    //coroutines support for firebase i.e. a way of handling background processes
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
     //test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

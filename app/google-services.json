@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "165941147692",
+    "project_id": "mediahub-3eb45",
+    "storage_bucket": "mediahub-3eb45.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165941147692:android:10213edb978ec972263989",
+        "android_client_info": {
+          "package_name": "com.example.mediahub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7_6uheOIBm9t5OBl1SNvkLSuTEcdh5_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
