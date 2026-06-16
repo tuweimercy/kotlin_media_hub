@@ -127,6 +127,7 @@ _publicMedia.value = snapshot.documents.map{ doc -> doc.toObject(MediaItem::clas
           imageUrl = mediaUrl,
           ownerName = ownerName,
           ownerId = uid,
+          category = category,
           isPublic = isPublic
       )
                 db.collection("media").add(mediaItem.toMap()).await()
