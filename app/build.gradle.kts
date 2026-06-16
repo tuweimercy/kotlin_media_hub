@@ -68,6 +68,8 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx")
     //coroutines support for firebase i.e. a way of handling background processes
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
+    //cloudinary
+    implementation("com.cloudinary:cloudinary-android:2.3.1")
     //test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

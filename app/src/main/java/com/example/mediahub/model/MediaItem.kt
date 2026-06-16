@@ -28,7 +28,7 @@ data class MediaItem(
     val imageUrl: String ="",
     val ownerName: String ="",
     val ownerId: String ="",
-    val isPublic: String ="",
+    val isPublic: Boolean = false,
     val category: String ="",
     val uploadedAt: Timestamp= Timestamp.now(), //captures current time
 

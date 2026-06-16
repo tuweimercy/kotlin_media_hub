@@ -28,22 +28,9 @@ Designed to prepare ,manage and hold ui related data in lifecycle independent of
    ### CRUD IMPLEMENTATION
  - Ensure firestore is enabled in firebase console
  - set up the model class for the colection upload
-
-
-
 ### Media Processing (images,videos and docs)
-
-
 - use of cloudinary : add dependency to build.gradle
-
-
 - make an application class for access to the service
-
-
 - register the class in android manifest
-
-
 - config cloudinary : set an upload preset in cloudinary
-
-
 - set up helper function to upload files to cloudinary storage
