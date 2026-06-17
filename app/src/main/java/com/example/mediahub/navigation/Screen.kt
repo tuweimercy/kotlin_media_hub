@@ -17,4 +17,5 @@ sealed class Screen(val route: String){
     {
         fun createRoute(mediaId: String)="edit_media/$mediaId"
     }
+    object Profile : Screen("profile")
 }
