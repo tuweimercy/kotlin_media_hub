@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.mediahub.model.UserProfile
 import com.example.mediahub.model.UserRole
@@ -52,10 +53,16 @@ profile?.fullName?.firstOrNull()?.uppercase() ?: "User" ,
                 )
             }
             Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                profile?.fullName ?: "MediaHub",
+                style = MaterialTheme.typography.headlineMedium,
+                color =Color.Blue
+            )
+            Spacer(modifier = Modifier.height(4.dp))
 Text(
     if(isTeacher) "Teacher" else "Student",
     style = MaterialTheme.typography.labelSmall,
-    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.7f)
+    color = Color.Blue
 )
         }
         Spacer(modifier = Modifier.height(8.dp))

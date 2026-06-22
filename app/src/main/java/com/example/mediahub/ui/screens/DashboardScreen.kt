@@ -2,13 +2,20 @@ package com.example.mediahub.ui.screens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,11 +23,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.mediahub.model.UserRole
 import com.example.mediahub.navigation.Screen
+import com.example.mediahub.ui.components.AppBottomBar
 import com.example.mediahub.ui.components.AppDrawer
+import com.example.mediahub.ui.theme.MediaHubTheme
 import com.example.mediahub.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
@@ -53,16 +64,53 @@ onLogoutClick = {
         popUpTo(0){inclusive = true}
     }
 }
-            ){
-//scaffold :allows defination of diff. parts of the UI
-                Scaffold(
-topBar = {},
-bottomBar = {},
-containerColor = MaterialTheme.colorScheme.background
-                ){}
-            }
+            )
+
+
         }
-    ) { }
+    ) {
+        //scaffold :allows defination of diff. parts of the UI
+        Scaffold(
+            //top bar click for menu  to open
+            topBar = {
+                TopAppBar(
+                    title = { Text("MediaHub") },
+                    navigationIcon = {IconButton(onClick = {
+                        scope.launch { drawerScope.open() }
+                    })
+                    {Icon(Icons.Default.Menu,"Menu")}},
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    )
+                )
+            },
+            bottomBar = {
+                //bottom nav goes here
+                AppBottomBar(
+                    "dashboard",
+                    onDashboardClick = {},
+                    onUploadClick = {navController.navigate(Screen.UploadMedia.route)},
+                    onProfileClick = {navController.navigate(Screen.Profile.route)},
+
+                    )
+            },
+            containerColor = MaterialTheme.colorScheme.background
+        ){
+            padding ->
+Box(modifier = Modifier.fillMaxSize().padding(padding),
+    contentAlignment = Alignment.Center){
+    Text("Dashboard Content goes here")
+
+}
+        }
+    }
 
 
+}
+@Preview(showBackground = true)
+@Composable
+fun DashboardScreenPreview(){
+    MediaHubTheme {
+        DashboardScreen(rememberNavController())
+    }
 }
