@@ -1,6 +1,7 @@
 package com.example.mediahub.ui.screens
 
 import android.net.Uri
+import android.view.RoundedCorner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,7 +25,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Error
@@ -63,17 +64,14 @@ import androidx.navigation.NavController
 import com.example.mediahub.viewmodel.AuthViewModel
 import com.example.mediahub.viewmodel.MediaState
 import com.example.mediahub.viewmodel.MediaViewModel
-
+import kotlin.contracts.contract
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-
-fun UploadMediaScreen(
-    navController: NavController,
-    authViewModel: AuthViewModel = viewModel(),
-    mediaViewModel: MediaViewModel = viewModel(),
-) {
+fun UploadMediaScreen(navController: NavController,
+                      authViewModel: AuthViewModel = viewModel(),
+                      mediaViewModel: MediaViewModel = viewModel()) {
 // define inputs (variable ref) to collect and send to firestore
-    val context = LocalContext.current //tags current screen
+    val context = LocalContext.current // tags current screen
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("Video") }
@@ -232,9 +230,7 @@ fun UploadMediaScreen(
                 "Category", style = MaterialTheme.typography.labelSmall,
                 color = Color.Blue
             )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 categories.forEach { cat ->
                     FilterChip(
                         selected = category == cat,
@@ -247,16 +243,19 @@ fun UploadMediaScreen(
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surface
-                ),
-                shape = RoundedCornerShape(12.dp)
+                ), shape = RoundedCornerShape(12.dp)
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(horizontal = 12.dp, vertical = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().padding(
+                        horizontal = 16.dp,
+                        vertical = 12.dp
+                    ),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        if (isPublic) Icons.Default.Public else Icons.Default.Lock, null,
+                        if (isPublic) Icons.Default.Public else
+                            Icons.Default.Lock,
+                        null,
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Spacer(Modifier.width(12.dp))
@@ -267,19 +266,19 @@ fun UploadMediaScreen(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            if (isPublic) "Visible to all Users" else "Only visible to you",
+                            if (isPublic) "Visible to All Users." else
+                                "Only Visible to You.",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                     }
-                    //SWITCH: toggle inerface
+                    // Switch : toggle interface
                     Switch(
-                        checked = isPublic,
-                        onCheckedChange = { isPublic = it }
+                        checked = isPublic, onCheckedChange = { isPublic = it }
                     )
                 }
             }
-//progress bar = show user percentage of upload
+            // progress bar = show user percentage of upload
             if (isLoading && uploadProgress > 0f) {
                 Column {
                     LinearProgressIndicator(
@@ -294,28 +293,22 @@ fun UploadMediaScreen(
                         color = Color.Blue
                     )
                 }
-
             }
-            //button to submit data to firestore
+            // button to submit data to firestore
             Button(
                 onClick = {
                     mediaUri?.let { uri ->
                         mediaViewModel.uploadMedia(
-                            context,
-                            title,
-                            description,
-                            category,
-                            isPublic,
-                            uri,
+                            context, title, description, category,
+                            isPublic, uri,
                             ownerName = profile?.fullName ?: "Anonymous"
                         )
                     }
-
                 },
-                enabled = title.isNotBlank() && description.isNotBlank() && mediaUri != null && !isLoading,
+                enabled = title.isNotBlank() && description.isNotBlank() &&
+                        mediaUri != null && !isLoading,
                 modifier = Modifier.fillMaxWidth().height(52.dp),
                 shape = RoundedCornerShape(12.dp)
-
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
@@ -324,22 +317,14 @@ fun UploadMediaScreen(
                         strokeWidth = 2.dp
                     )
                 } else {
-                    Icon(Icons.Default.CloudUpload, null)
+                    Icon(
+                        Icons.Default.CloudUpload,
+                        null
+                    )
                     Spacer(Modifier.width(8.dp))
                     Text("Upload Media")
                 }
             }
-
-
         }
     }
 }
-
-
-
-
-
-
-
-
-

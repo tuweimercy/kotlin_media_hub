@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -49,99 +50,117 @@ import com.example.mediahub.viewmodel.AuthViewModel
 
 @Composable
 fun LoginScreen(navController: NavController,
-                authViewModel: AuthViewModel = viewModel()
- ) {
-    //data to be maintained in the screen
-    //login info: email x password
-    //mutable state of= data that can change
+                authViewModel: AuthViewModel = viewModel()){
+    // data to be maintained in the composable : state
+    // login info : email X password
+    // mutableStateOf = declares that the data can be changed
     var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    //controlling visibility of password showcase
-    var passwordVisible by remember { mutableStateOf(false) }
+    var password by remember {mutableStateOf("")}
+    // auth view model references
     val authState by authViewModel.authState.collectAsState()
     val isLoading = authState is AuthState.Loading
     val errorMessage = (authState as? AuthState.Error)?.message
-    // when a user registers successfully we take them to the dashboard
-    LaunchedEffect(authState) {
-        if (authState is AuthState.Success) {
-            navController.navigate(Screen.Dashboard.route) {
-                popUpTo(Screen.Login.route) { inclusive = true }
+
+    // when a user logins successfully take to the
+    // dashboard
+    LaunchedEffect(authState
+    ) {
+        if(authState is AuthState.Success){
+            navController.navigate(Screen.Dashboard.route){
+                popUpTo(Screen.Login.route) {inclusive = true}
             }
         }
     }
-    Box(modifier = Modifier.fillMaxSize()
-        .background(color = MaterialTheme.colorScheme.background),
+
+    // controlling visiblity of password showcase
+    var passwordVisible by remember { mutableStateOf(false) }
+    Box(modifier=Modifier.fillMaxSize()
+        .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center){
-        Column(modifier = Modifier.fillMaxSize()
+        Column(modifier = Modifier.fillMaxWidth()
             .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,){
+            horizontalAlignment = Alignment.CenterHorizontally){
             Icon(Icons.Default.VideoLibrary,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size( 64.dp))
+                tint=MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(64.dp))
             Spacer(Modifier.height(8.dp))
-            Text(text = "Welcome Back",
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onBackground)
+            Text(text="Welcome Back",
+                style= MaterialTheme.typography.displayLarge,
+                color=MaterialTheme.colorScheme.onBackground)
             Spacer(Modifier.height(8.dp))
-            Text(text = "Sign in to MediaHub",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+            Text(text="Sign In to MediaHub",
+                style= MaterialTheme.typography.bodyLarge,
+                color=MaterialTheme.colorScheme.onSurface.copy(
+                    alpha = 0.5f
+                ))
             Spacer(Modifier.height(40.dp))
-            //form inputs
-            //onValuechhange = captures the current input the user enters
+            // form inputs
+            // onValueCHange = captures the current input the user
+            // enters
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email") },
-                leadingIcon = {Icon(Icons.Default.Email, contentDescription = null) },
+                value= email, onValueChange = {email = it},
+                label={Text("Email")},
+                leadingIcon = {Icon(
+                    Icons.Default.Email,
+                    null)},
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email
-
                 ),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp)
             )
+            Spacer(modifier = Modifier.height(12.dp))
+            // form inputs
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
+                value= password,
+                onValueChange = {password = it},
+                label={Text("Password")},
                 shape = RoundedCornerShape(12.dp),
-                singleLine = true,
+                singleLine = true ,
                 modifier = Modifier.fillMaxWidth(),
-                leadingIcon = {Icon(Icons.Default.Lock, contentDescription = null)},
+                leadingIcon = {Icon(
+                    Icons.Default.Lock,
+                    null
+                )},
                 trailingIcon = {
                     IconButton(onClick = {
                         passwordVisible = !passwordVisible
                     }) {
                         Icon(
-    if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                            contentDescription = null)
+                            if(passwordVisible)
+                                Icons.Default.VisibilityOff else
+                                Icons.Default.Visibility,
+                            null
+                        )
                     }
                 },
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                visualTransformation = if(passwordVisible)
+                    VisualTransformation.None else
+                    PasswordVisualTransformation()
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             // link to forgot password screen
             TextButton(
                 onClick = {
-                    navController.navigate(Screen.ForgotPassword.route)
+                    navController.navigate(
+                        Screen.ForgotPassword.route)
                 },
-                modifier = Modifier.align(Alignment.End),
+                modifier = Modifier.align(Alignment.End)
             ) {
-                Text(text = "Forgot Password?",
-                    color = MaterialTheme.colorScheme.primary)
-
+                Text("Forgot Password?",
+                    color=MaterialTheme.colorScheme.primary)
             }
-            Spacer(Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             Button(
                 onClick = {
-                    authViewModel.Login(email, password)
+                    authViewModel.Login(email,password)
                 },
-                modifier = Modifier.fillMaxWidth().height(52.dp),
-                shape = RoundedCornerShape(12.dp),
-                enabled = email.isNotBlank() && password.isNotBlank() && !isLoading
+                modifier= Modifier.fillMaxWidth().height(52.dp),
+                shape=RoundedCornerShape(12.dp),
+                enabled= email.isNotBlank() && password.isNotBlank()
+                        && !isLoading
             ) {
                 if(isLoading){
                     CircularProgressIndicator(
@@ -149,43 +168,38 @@ fun LoginScreen(navController: NavController,
                         color = MaterialTheme.colorScheme.onPrimary,
                         strokeWidth = 2.dp
                     )
-                }
-                else {
-                    Text(text = "Sign in",style = MaterialTheme.typography.bodyLarge)
+                } else {
+                    Text("Sign In",style=MaterialTheme.typography
+                        .bodyLarge)
                 }
             }
-
 //            Button(
-//                onClick = {},
-//                modifier = Modifier.fillMaxWidth().height(52.dp),
+//                onClick={},
+//                modifier=Modifier.fillMaxWidth().height(52.dp),
 //                shape = RoundedCornerShape(12.dp)
-//            ) {
-//                Text(text = "Sign in",
-//                    style = MaterialTheme.typography.bodyLarge)
-//            }
+//            ){  Text("Sign In",
+//                style = MaterialTheme.typography.bodyLarge)}
             Spacer(Modifier.height(16.dp))
-            //to link to the register screen
+            // to link to the register screen
             TextButton(
                 onClick = {
                     authViewModel.clearState()
-                    navController.navigate(Screen.Register.route)
+                    navController.navigate(
+                        Screen.Register.route)
                 },
-                modifier = Modifier.align(Alignment.End),
+                modifier = Modifier.align(Alignment.End)
             ) {
-                Text(text = "Don't have an account? Register",
-                    color = MaterialTheme.colorScheme.primary)
-
+                Text("Don't have an account? Register",
+                    color=MaterialTheme.colorScheme.primary)
             }
-
-
         }
     }
 }
+
 @Preview
 @Composable
-fun LoginScreenPreview() {
+fun LoginScreenPreview(){
     MediaHubTheme {
-        LoginScreen(navController = rememberNavController())
+        LoginScreen(rememberNavController())
     }
-
 }

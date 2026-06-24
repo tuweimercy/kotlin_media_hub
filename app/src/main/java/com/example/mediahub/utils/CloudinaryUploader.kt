@@ -27,6 +27,7 @@ object CloudinaryUploader {
         //set up the methods to show progress ,error or interruptions
         MediaManager.get()
             .upload(imageUri)
+            .option("resource_type", "auto")
             .unsigned(preset)
             .callback(object : UploadCallback {
                 override fun onStart(requestId: String?) {}

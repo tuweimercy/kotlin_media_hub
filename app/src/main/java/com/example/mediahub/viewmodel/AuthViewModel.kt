@@ -121,7 +121,7 @@ class AuthViewModel : ViewModel(){
                 // pack our data into our model class
                 val profile = UserProfile(
                     uid = uid,
-                    fullName = doc.getString("fullname") ?: "",
+                    fullName = doc.getString("fullName") ?: "",
                     email = doc.getString("email") ?: "",
                     role = doc.getString("role") ?: "student"
                 )

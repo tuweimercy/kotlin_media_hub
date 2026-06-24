@@ -18,7 +18,7 @@ data class UserProfile(
 
     )
     fun userRole(): UserRole =
-        if(role == "teacher") UserRole.TEACHER else UserRole.STUDENT
+        if(role.equals("teacher", ignoreCase = true)) UserRole.TEACHER else UserRole.STUDENT
 }
 //model for media assets
 data class MediaItem(
