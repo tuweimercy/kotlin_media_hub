@@ -79,16 +79,18 @@ fun DashboardScreen(navController: NavController,
     val profile by authViewModel.currentProfile.collectAsState()
     val isTeacher = profile?.userRole() == UserRole.TEACHER
     //call the methods for the firestore fetch
-LaunchedEffect(profile) {
-    if(profile != null)
-    mediaViewModel.loadPublicMedia()
-    mediaViewModel.loadMyMedia()
-    if (isTeacher) mediaViewModel.loadAllMedia()
-}
+    LaunchedEffect(profile) {
+        if(profile != null)
+            mediaViewModel.loadPublicMedia()
+        mediaViewModel.loadMyMedia()
+        if (isTeacher) mediaViewModel.loadAllMedia()
+    }
+
     // firestore firebase references
     val publicMedia by mediaViewModel.publicMedia.collectAsState()
     val myMedia  by mediaViewModel.myMedia.collectAsState()
     val allMedia by mediaViewModel.allMedia.collectAsState()
+    val mediaState by mediaViewModel.mediaState.collectAsState()
     // filtering for assets
     var selectedTab by remember { mutableStateOf(0) }
     // initial state of our drawer
@@ -242,13 +244,31 @@ fun MediaListCard(item: MediaItem, onClick: () -> Unit){
             modifier=Modifier.fillMaxWidth().padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                model = item.imageUrl,
-                contentDescription = item.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(72.dp)
-                    .clip(RoundedCornerShape(12.dp))
-            )
+            //thumbnail or placeholder depending on category
+            if(item.category == "image"){
+                AsyncImage(
+                    model = item.imageUrl,
+                    contentDescription = item.title,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(72.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                )
+
+            }
+            else {
+Box(contentAlignment = Alignment.Center,
+    modifier=Modifier.size(72.dp).clip(RoundedCornerShape(12.dp)
+    )){
+    Icon(
+        Icons.Default.Category,
+        contentDescription = item.category,
+        tint = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.size(32.dp)
+    )
+}
+            }
+
+
             Spacer(Modifier.width(12.dp))
             Column(modifier=Modifier.weight(1f)){
                 Text(
